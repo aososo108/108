@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>シンプル掲示板</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #2b2b2b;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            display: flex;
+            flex-wrap: nowrap;
+            width: 90%;
+            max-width: 1200px;
+            margin-top: 20px;
+        }
+        .left-section {
+            flex: 1;
+            margin-right: 10px;
+            text-align: center;
+        }
+        .center-section {
+            flex: 3;
+            text-align: center;
+        }
+        .right-section {
+            flex: 1;
+            margin-left: 10px;
+            background-color: #3a3a3a;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .message-box {
+            margin-bottom: 20px;
+        }
+        .message-box input, .message-box textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4a4a4a;
+            color: #ffffff;
+            font-size: 14px;
+        }
+        .message-box button {
+            padding: 10px 20px;
+            background-color: #5555ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .message-history {
+            background-color: #3a3a3a;
+            padding: 10px;
+            border-radius: 5px;
+            height: 300px;
+            overflow-y: auto;
+        }
+        .message-history div {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #4a4a4a;
+            border-radius: 5px;
+        }
+        .access-history {
+            font-size: 14px;
+        }
+        .current-time {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 左側: 現在時刻 -->
+        <div class="left-section">
+            <div class="current-time" id="current-time"></div>
+        </div>
+
+        <!-- 中央: メッセージ入力と履歴 -->
+        <div class="center-section">
+            <div class="message-box">
+                <input type="text" id="username" placeholder="ユーザー名">
+                <textarea id="message" placeholder="メッセージを入力"></textarea>
+                <button onclick="sendMessage()">送信</button>
+            </div>
+            <div class="message-history" id="message-history">
+                <!-- メッセージ履歴がここに表示される -->
+            </div>
+        </div>
+
+        <!-- 右側: アクセス履歴 -->
+        <div class="right-section">
+            <div class="access-history" id="access-history">
+                <!-- アクセス履歴がここに表示される -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 現在時刻の表示
+        function updateTime() {
+            const now = new Date();
+            const timeString = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日 ${now.getHours()}時${now.getMinutes()}分${now.getSeconds()}秒`;
+            document.getElementById('current-time').innerText = `現在時刻: ${timeString}`;
+        }
+        setInterval(updateTime, 1000);
+
+        // メッセージ送信処理
+        function sendMessage() {
+            const username = document.getElementById('username').value;
+            const message = document.getElementById('message').value;
+            const messageHistory = document.getElementById('message-history');
+
+            if (username && message) {
+                const messageElement = document.createElement('div');
+                messageElement.innerText = `[${username}] ${message}`;
+                messageHistory.appendChild(messageElement);
+                document.getElementById('message').value = ''; // 入力欄をクリア
+            } else {
+                alert('ユーザー名とメッセージを入力してください！');
+            }
+        }
+
+        // 初回の時刻更新
+        updateTime();
+    </script>
+</body>
+</html>
